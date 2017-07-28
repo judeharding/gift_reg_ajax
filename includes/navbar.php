@@ -14,7 +14,8 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li><a href="/account_list.php">Account List</a></li>
-                <li><a href="/account.php?action=insert">Add Account</a></li>
+                <!-- <li><a href="#account_form" data-toggle="modal" data-target="#account_form" >Add Account</a></li> -->
+                <li><a href="javascript:void(0);" onclick="openAccountInsert()">Add Account</a></li>
             </ul>
         </div>
     </div>
