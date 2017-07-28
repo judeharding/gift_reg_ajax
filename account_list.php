@@ -39,7 +39,7 @@
     <body>
         <?php require("includes/navbar.php"); ?>
 
-        <div class="container-fluid">
+        <div class="container-fluid" id="account_list_data">
             <div class="table-responsive">
                 <table class="table">
                     <tr>
@@ -69,30 +69,29 @@
                                 <div class="form-group">
                                     <label for="first_name" class="col-sm-2 control-label">First Name</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="first_name" name="first_name" value="<?php echo $first_name; ?>" disabled="disabled">
+                                        <input type="text" class="form-control" id="first_name" name="first_name" value="" disabled="disabled">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="last_name" class="col-sm-2 control-label">Last Name</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="last_name" name="last_name" value="<?php echo $last_name; ?>"disabled="disabled">
+                                        <input type="text" class="form-control" id="last_name" name="last_name" value="" disabled="disabled">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="email" class="col-sm-2 control-label">Email</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="email" name="email" value="<?php echo $email; ?>"disabled="disabled">
+                                        <input type="text" class="form-control" id="email" name="email" value="" disabled="disabled">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
-                                        <input type="hidden" name="action" value="<?php echo $action; ?>">
-                                        <input type="hidden" name="account_id" value="<?php echo $account_id; ?>">
-                                        <button type="submit" id="submit" class="btn btn-success" name="submit" value="submit">Submit</button>
-                                        <button type="cancel" id="cancel" class="btn btn-default" name="cancel" value="cancel" onclick="returnAccountList()">Cancel</button>
+                                        <input type="hidden" name="action" value="">
+                                        <!-- <button type="submit" id="submit" class="btn btn-success" name="submit" value="submit">Submit</button>
+                                        <button type="cancel" id="cancel" class="btn btn-default" name="cancel" value="cancel" onclick="returnAccountList()">Cancel</button> -->
                                     </div>
                                 </div>
                                 <!-- end of my modal form -->
@@ -101,7 +100,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-primary" id="submit">Submit</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -109,11 +108,84 @@
 
         <script type="text/javascript">
             function openAccountInsert(){
-                console.log("OAI working");
-                $('#account_form').on('shown.bs.modal', function (e) {
-                      console.log("its working");
-                })
+                action = "insert";
+                $('#account_form').modal('show');
+                if (action == "insert") {
+                    document.getElementById("first_name").removeAttribute("disabled");
+                    document.getElementById("last_name").removeAttribute("disabled");
+                    document.getElementById("email").removeAttribute("disabled");
+                }
             }
+
+            function processSubmitClick() {
+                if (action == "insert") {
+                    insertAccount();
+                }
+            }
+            function insertAccount(){
+                console.log("CODE THAT INSERTS ACCOUNT RECORD");
+
+                var request = new XMLHttpRequest();
+                var url = "account_process.php";
+                var first_name = document.getElementById("first_name").value;
+                var last_name = document.getElementById("last_name").value;
+                var email = document.getElementById("email").value;
+
+                var vars = "first_name=" + first_name + "&last_name=" + last_name + "&email=" + email + "&action=insert";
+                console.log(vars);
+
+                request.open("POST", url, true);
+                request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                request.onreadystatechange = function() {
+                    if (request.readyState == 4 && request.status == 200) {
+                        var return_data = request.responseText;
+                        refreshAccountList();
+                    }
+                }
+                request.send(vars);
+                $('#account_form').modal('hide');
+
+            }
+
+            function updateAccount() {
+                console.log("CODE THAT UPDATES THE SELECTED RECORD");
+            }
+
+            function viewAccount(){
+                console.log("CODE THAT RETRIEVES THE SELECTED RECORD");
+            }
+
+            function deleteAccount() {
+                console.log("CODE THAT DELETES THE SELECTED RECORD");
+            }
+
+            function refreshAccountList() {
+                console.log("account list refreshing");
+                var request = new XMLHttpRequest();
+                var url = "account_list_data.php";
+                // var first_name = document.getElementById("first_name").value;
+                // var last_name = document.getElementById("last_name").value;
+                // var email = document.getElementById("email").value;
+
+                var vars = "";
+                // console.log(vars);
+
+                request.open("POST", url, true);
+                request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                request.onreadystatechange = function() {
+                    if (request.readyState == 4 && request.status == 200) {
+                        var returnData = request.responseText;
+                        console.log(returnData);
+                        document.getElementById("account_form").innerHTML = returnData;
+                    }
+                }
+                request.send(vars);
+            }
+
+            document.getElementById("submit").addEventListener("click", processSubmitClick);
+
+
+
         </script>
 
     </body>
