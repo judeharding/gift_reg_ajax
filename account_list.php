@@ -110,14 +110,18 @@
             function openAccountInsert(){
                 action = "insert";
                 $('#account_form').modal('show');
-                if (action == "insert") {
-                    document.getElementById("first_name").removeAttribute("disabled");
-                    document.getElementById("last_name").removeAttribute("disabled");
-                    document.getElementById("email").removeAttribute("disabled");
-                }
+                document.getElementById("first_name").removeAttribute("disabled");
+                document.getElementById("last_name").removeAttribute("disabled");
+                document.getElementById("email").removeAttribute("disabled");
+                $('#account_form').on('shown.bs.modal', function (e) {
+                    document.getElementById("first_name").value="";
+                    document.getElementById("last_name").value="";
+                    document.getElementById("email").value="";
+                })
             }
 
             function processSubmitClick() {
+
                 if (action == "insert") {
                     insertAccount();
                 }
@@ -176,7 +180,7 @@
                     if (request.readyState == 4 && request.status == 200) {
                         var returnData = request.responseText;
                         console.log(returnData);
-                        document.getElementById("account_form").innerHTML = returnData;
+                        document.getElementById("account_list_data").innerHTML = returnData;
                     }
                 }
                 request.send(vars);
