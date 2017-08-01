@@ -44,18 +44,18 @@
                 document.getElementById("first_name").removeAttribute("disabled");
                 document.getElementById("last_name").removeAttribute("disabled");
                 document.getElementById("email").removeAttribute("disabled");
-                $('#account_form').on('shown.bs.modal', function (e) {
-                    document.getElementById("first_name").value="";
-                    document.getElementById("last_name").value="";
-                    document.getElementById("email").value="";
-                    document.getElementById("action").value="insert";
 
-                })
+                document.getElementById("first_name").value="";
+                document.getElementById("last_name").value="";
+                document.getElementById("email").value="";
+                document.getElementById("action").value="insert";
+
+
             }
 
             function processSubmitClick() {
-                // console.log("PROCESS CLICK");
-                // console.log(action);
+                console.log("PROCESS CLICK");
+                console.log(action);
                 // var actionField = document.getElementById("action").value;
                 // if (actionField) {
                 //     var action = actionField;
@@ -71,6 +71,7 @@
                 }
 
                 if (action == "delete") {
+                    console.log("DELETING");
                     deleteAccount();
                 }
 
@@ -174,12 +175,11 @@
                     if (request.readyState == 4 && request.status == 200) {
                         var returnData = request.responseText;
                         refreshAccountList();
+                        document.getElementById("action").value = "";
                     }
                 }
                 request.send(vars);
             }
-
-
 
             document.getElementById("submit").addEventListener("click", processSubmitClick);
 

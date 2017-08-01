@@ -13,7 +13,7 @@ function refreshAccountList() {
         if (request.readyState == 4 && request.status == 200) {
             var returnData = request.responseText;
             document.getElementById("account_list_data").innerHTML = returnData;
-            document.getElementById("action").value = "xxx";
+            document.getElementById("action").value = "";
         }
     }
     request.send(vars);
