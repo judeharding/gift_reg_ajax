@@ -1,6 +1,6 @@
 <?php
     require("includes/db.php");
-    require("getAccounts.php");
+    // require("getAccounts.php");
 ?>
 
 <!DOCTYPE html>
@@ -48,16 +48,25 @@
                     document.getElementById("first_name").value="";
                     document.getElementById("last_name").value="";
                     document.getElementById("email").value="";
+                    document.getElementById("action").value="insert";
+
                 })
             }
 
             function processSubmitClick() {
+                // console.log("PROCESS CLICK");
+                // console.log(action);
+                // var actionField = document.getElementById("action").value;
+                // if (actionField) {
+                //     var action = actionField;
+                // }
 
                 if (action == "insert") {
                     insertAccount();
                 }
 
                 if (action == "update") {
+                    console.log("ACTION UPDATE");
                     updateAccount();
                 }
 
@@ -69,6 +78,7 @@
                     viewAccount();
                 }
             }
+
             function insertAccount(){
 
                 var request = new XMLHttpRequest();
@@ -92,26 +102,77 @@
 
             }
 
-            function updateAccount() {
-                console.log("CODE THAT UPDATES THE SELECTED RECORD");
+            function getAccount(accountId) {
+
+                var request = new XMLHttpRequest();
+                var url = "account_process.php";
+                var vars = "account_id=" + accountId + "&action=update";
+
+                request.open("POST", url, true);
+                request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                request.onreadystatechange = function() {
+                    if (request.readyState == 4 && request.status == 200) {
+                        var returnData = JSON.parse(request.responseText);
+                        var first_name = returnData.first_name;
+                        var last_name = returnData.last_name;
+                        var email = returnData.email;
+
+                        $('#account_form').modal('show');
+                        document.getElementById("first_name").value = first_name;
+                        document.getElementById("last_name").value = last_name;
+                        document.getElementById("email").value = email;
+                        document.getElementById("account_id").value = accountId;
+                        document.getElementById("action").value = "update";
+
+                        document.getElementById("first_name").removeAttribute("disabled");
+                        document.getElementById("last_name").removeAttribute("disabled");
+                        document.getElementById("email").removeAttribute("disabled");
+                        // refreshAccountList();
+                    }
+                }
+                request.send(vars);
+            }
+
+            function updateAccount(accountId){
+                console.log("UPDATING ACCOUNT INFO ", accountId);
+
             }
 
             function viewAccount(){
                 console.log("CODE THAT RETRIEVES THE SELECTED RECORD");
+
+                                // JUST IN CASE I DON"T REMEMBER THE CODE FOR VIEW
+                                // var request = new XMLHttpRequest();
+                                // var url = "account_process.php";
+                                // var vars = "account_id=" + accountId + "&action=update";
+                                //
+                                // request.open("POST", url, true);
+                                // request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                                // request.onreadystatechange = function() {
+                                //     if (request.readyState == 4 && request.status == 200) {
+                                //         var returnData = JSON.parse(request.responseText);
+                                //         console.log(returnData);
+                                //         var first_name = returnData.first_name;
+                                //         var last_name = returnData.last_name;
+                                //         var email = returnData.email;
+                                //         console.log(first_name, last_name, email);
+                                //
+                                //         $('#account_form').modal('show');
+                                //         document.getElementById("first_name").value = first_name;
+                                //         document.getElementById("last_name").value = last_name;
+                                //         document.getElementById("email").value = email;
             }
 
             function deleteAccount(accountId) {
                 var request = new XMLHttpRequest();
                 var url = "account_process.php";
                 var vars = "account_id=" + accountId + "&action=delete";
-                console.log(vars);
 
                 request.open("POST", url, true);
                 request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 request.onreadystatechange = function() {
                     if (request.readyState == 4 && request.status == 200) {
                         var returnData = request.responseText;
-                        console.log(returnData);
                         refreshAccountList();
                     }
                 }

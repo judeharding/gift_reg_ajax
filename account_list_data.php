@@ -28,7 +28,7 @@
                             <td><a href='account.php?action=view&account_id=$account_id'>$last_name</a></td>
                             <td><a href='account.php?action=view&account_id=$account_id'>$email</a></td>
                             <td>
-                                <a href='account.php?action=update&account_id=$account_id' class='btn btn-info btn-sm'><span class='glyphicon glyphicon-pencil'></span> Edit</a>
+                                <a href='javascript:void(0);' class='btn btn-info btn-sm' onclick='getAccount(\"$account_id\")'><span class='glyphicon glyphicon-pencil'></span> Edit</a>
                                 <a href='javascript:void(0);' class='btn btn-danger btn-sm' onclick='deleteAccount(\"$account_id\")'><span class='glyphicon glyphicon-trash'></span> Delete</a>
                             </td>
                         </tr>

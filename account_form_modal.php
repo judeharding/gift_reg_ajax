@@ -33,11 +33,11 @@
 
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <input type="hidden" name="action" value="">
-                                <!-- <button type="submit" id="submit" class="btn btn-success" name="submit" value="submit">Submit</button>
-                                <button type="cancel" id="cancel" class="btn btn-default" name="cancel" value="cancel" onclick="returnAccountList()">Cancel</button> -->
+                                <input type="hidden" name="action" value="" id="action">
+                                <input type="hidden" name="account_id" value="" id="account_id">
                             </div>
                         </div>
+
                         <!-- end of my modal form -->
                     </form>
 

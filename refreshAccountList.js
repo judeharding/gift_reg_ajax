@@ -1,5 +1,4 @@
 function refreshAccountList() {
-    console.log("GOT HERE");
     var request = new XMLHttpRequest();
     var url = "account_list_data.php";
     // var first_name = document.getElementById("first_name").value;
@@ -14,6 +13,7 @@ function refreshAccountList() {
         if (request.readyState == 4 && request.status == 200) {
             var returnData = request.responseText;
             document.getElementById("account_list_data").innerHTML = returnData;
+            document.getElementById("action").value = "xxx";
         }
     }
     request.send(vars);
